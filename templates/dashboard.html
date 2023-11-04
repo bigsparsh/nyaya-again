@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="//cdn.tailwindcss.com"></script>
+</head>
+<body class="">
+
+    <div class="text-5xl font-semibold px-5 py-3 flex justify-between items-center">
+        <h1 class="text">Welcome, {{ type }} <span class="text-green-500">{{ user.name }}</span></h1>
+        <a href="/logout" class="text-2xl font-semibold bg-red-500 px-3 py-1 text-white rounded-lg">Logout</a>
+    </div>
+    <hr>
+    <p class="text-lg"> <span class="px-5 font-semibold text-blue-500">Email-ID:</span> {{user.email}} </p>
+    <p class="text-lg"> <span class="px-5 font-semibold text-blue-500">Address:</span> {{user.address}} </p>
+    <p class="text-lg"> <span class="px-5 font-semibold text-blue-500">Phone:</span> {{user.phone}} </p>
+    {% if type == "lawyer" %}
+        <p class="text-lg"> <span class="px-5 font-semibold text-blue-500">Bar-ID:</span> {{user.bar_id}} </p>
+    {% endif %}
+    {% if type == "user" %}
+        <p class="text-lg"> <span class="px-5 font-semibold text-blue-500">Aadhar-ID:</span> {{user.aadhar_id}} </p>
+    {% endif %}
+    <hr>
+
+    <main class="grid place-items-center h-1/2 p-10">
+
+        {% if type == "lawyer" %}
+        <h1 class="text-3xl p-3">All queries are: </h1>
+
+        {% endif %}
+
+        {% if type == "user" %}
+            <h1 class="text-3xl p-3">Available lawyers are: </h1>
+            <div class="big-container grid grid-cols-3">
+                {% for lawyer in all_lawyers %}
+                    <div class="container border border-black p-5">
+                        <h1 class="text-2xl font-bold">Advocate {{ lawyer.name }}</h1>
+                        <p class="text-lg"> <span class="px-5 font-semibold text-rose-500">Email-ID:</span> {{lawyer.email}} </p>
+                        <p class="text-lg"> <span class="px-5 font-semibold text-rose-500">Address:</span> {{lawyer.address}} </p>
+                        <p class="text-lg"> <span class="px-5 font-semibold text-rose-500">Phone:</span> {{lawyer.phone}} </p>
+                        <p class="text-lg"> <span class="px-5 font-semibold text-rose-500">Bar-ID:</span> {{lawyer.bar_id}} </p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+
+    </main>
+
+
+</body>
+</html>

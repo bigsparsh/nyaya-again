@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="//cdn.tailwindcss.com"></script>
+</head>
+<body class="h-screen w-screen flex items-center justify-center bg-stone-900 text-white">
+    
+    <div class="real_form text-center tracking-tight w-1/2">
+        <h1 class="text-3xl font-bold">Register as a Lawyer</h1>
+        <p class="text-lg text-stone-500">Enter your vaild credentials to register</p>
+        <form action="" method="POST" class="grid grid-cols-4 gap-2 text-left mt-5">
+            {% csrf_token %}
+            <label for="email" class="text-lg">Email-ID:</label>
+            <input type="email" name="email" id="email" class=" col-span-3 text-sm px-5 py-1 bg-transparent border border-white rounded-lg">
+
+            <label for="password" class="text-lg mt-2">Password:</label>
+            <input type="password" name="password" id="password" class=" col-span-3 text-sm px-5 py-1 bg-transparent border border-white rounded-lg">
+
+            <label for="bar" class="text-lg mt-2">Bar ID:</label>
+            <input type="number" name="bar" id="bar" class=" col-span-3 text-sm px-5 py-1 bg-transparent border border-white rounded-lg">
+
+            <label for="name" class="text-lg mt-2">Name:</label>
+            <input type="text" name="name" id="name" class=" col-span-3 text-sm px-5 py-1 bg-transparent border border-white rounded-lg">
+
+            <label for="phone" class="text-lg mt-2">Phone Number:</label>
+            <input type="number" name="phone" id="phone" class=" col-span-3 text-sm px-5 py-1 bg-transparent border border-white rounded-lg">
+
+            <label for="address" class="text-lg mt-2">Address:</label>
+            <textarea name="address" id="address" class=" col-span-3 text-sm px-5 py-1 bg-transparent border border-white rounded-lg"></textarea>
+
+            <label for="info" class="text-lg mt-2">Information about you:</label>
+            <textarea name="info" id="info" class=" col-span-3 text-sm px-5 py-1 bg-transparent border border-white rounded-lg"></textarea>
+
+            <label for="info" class="text-lg mt-2">Expertise:</label>
+            <div class="radio-group grid grid-cols-2 accent-stone-800 col-span-3 ">
+                {% for cat in expertise_categories %}
+                    <div class="container">
+                        <input type="checkbox" name="{{cat}}" id="{{cat}}">
+                        <label for="{{cat}}">{{cat}}</label>
+                    </div>
+                {% endfor %}
+            </div>
+            
+
+            <button class="bg-white text-stone-950 py-1 mt-3 rounded-lg font-medium text-xl tracking-tighter col-span-4"> Register yourself</button>
+
+        </form>
+    </div>    
+
+</body>
+</html>
