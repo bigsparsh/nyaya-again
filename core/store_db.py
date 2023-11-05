@@ -38,13 +38,19 @@ def insert_into_lawyer(email, name, phone, address, bar_id, info, expertise):
 def find_user(email):
     user = fire_db.collection("User").where("email", "==", email)
     user_info = user.get()[0].to_dict()
+    user_info["user_id"] = user.get()[0].id
     return user_info
 
 
 def find_lawyer(email):
     lawyer = fire_db.collection("Lawyers").where("email", "==", email)
     lawyer_info = lawyer.get()[0].to_dict()
+    lawyer_info["lawyer_id"] = lawyer.get()[0].id
     return lawyer_info
+
+
+# if __name__ == "__main__":
+#     print(find_lawyer("handle@gmail.com"))
 
 
 def list_lawyers():
@@ -81,14 +87,13 @@ def user_type(email):
 
 
 def make_query(email, title, description):
-    user = fire_db.collection("User").where("email", "==", email)
-    user_id = user.get()[0].id
+    user = find_user(email)
     queries = fire_db.collection("Queries").get()
     last_query_id = int(queries[-1].id)
     query_data = {
         "title": title,
         "description": description,
-        "user_id": fire_db.collection("User").document(user_id),
+        "user_id": fire_db.collection("User").document(user["user_id"]),
         "accepted": "false"
     }
     fire_db.collection("Queries").document(str(last_query_id + 1)).set(query_data)
