@@ -94,7 +94,19 @@ def make_query(email, title, description):
         "title": title,
         "description": description,
         "user_id": fire_db.collection("User").document(user["user_id"]),
-        "accepted": "false"
+        "accepted": False
     }
     fire_db.collection("Queries").document(str(last_query_id + 1)).set(query_data)
+
+
+def update_user(email):
+    user = find_user(email)
+    user_id = user["user_id"]
+    user.pop("user_id")
+
+
+def update_lawyer(email):
+    lawyer = find_user(email)
+    lawyer_id = lawyer["lawyer_id"]
+    lawyer.pop("user_id")
 

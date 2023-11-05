@@ -102,9 +102,14 @@ def query_generator(request):
 
 def dashboard(request):
     if request.session["user"]:
-        if user_type(request.session["user"]["email"]) == "user":
+        client_type = request.session["user"]["email"]
+        if request.method == "POST":
+            print(request.POST)
+
+        # else:
+        if user_type(client_type) == "user":
             main_info = list_lawyers()
-        if user_type(request.session["user"]["email"]) == "lawyer":
+        if user_type(client_type) == "lawyer":
             main_info = list_queries()
         return render(request, "dashboard.html",
                       {"type": user_type(request.session["user"]["email"]),
