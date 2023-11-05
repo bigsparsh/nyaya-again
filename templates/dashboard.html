@@ -12,7 +12,12 @@
 
     <div class="text-5xl font-semibold px-5 py-3 flex justify-between items-center">
         <h1 class="text">Welcome, {{ type }} <span class="text-green-500">{{ user.name }}</span></h1>
-        <a href="/logout" class="text-2xl font-semibold bg-red-500 px-3 py-1 text-white rounded-lg">Logout</a>
+        <div class="btns flex items-center justify-center gap-3">
+            <a href="/logout" class="text-2xl font-semibold bg-red-500 px-3 py-1 text-white rounded-lg">Logout</a>
+            {% if type == "user" %}
+                <a href="/query_generator" class="text-2xl font-semibold bg-red-500 px-3 py-1 text-white rounded-lg">Generate a query</a>
+            {% endif %}
+        </div>
     </div>
     <hr>
     <p class="text-lg"> <span class="px-5 font-semibold text-blue-500">Email-ID:</span> {{user.email}} </p>
@@ -30,13 +35,21 @@
 
         {% if type == "lawyer" %}
         <h1 class="text-3xl p-3">All queries are: </h1>
-
+            <div class="big-container grid grid-cols-3">
+                {% for query in main_info %}
+                    <div class="container border border-black p-5">
+                        <h1 class="text-2xl font-bold">{{query.title}}</h1>
+                        <p class="text-lg"> <span class="px-5 font-semibold text-rose-500">Description</span> {{query.description}} </p>
+                        <p class="text-lg"> <span class="px-5 font-semibold text-rose-500">User:</span> {{query.user_id}} </p>
+                    </div>
+                {% endfor %}
+            </div>
         {% endif %}
 
         {% if type == "user" %}
             <h1 class="text-3xl p-3">Available lawyers are: </h1>
             <div class="big-container grid grid-cols-3">
-                {% for lawyer in all_lawyers %}
+                {% for lawyer in main_info %}
                     <div class="container border border-black p-5">
                         <h1 class="text-2xl font-bold">Advocate {{ lawyer.name }}</h1>
                         <p class="text-lg"> <span class="px-5 font-semibold text-rose-500">Email-ID:</span> {{lawyer.email}} </p>

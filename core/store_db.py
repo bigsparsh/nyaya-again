@@ -56,7 +56,12 @@ def list_users():
 
 
 def list_queries():
-    return [query.to_dict() for query in fire_db.collection("Queries").get()]
+    qry_lst = []
+    for index, query in enumerate(fire_db.collection("Queries").get()):
+        qry_lst.append(query.to_dict())
+        # print(qry_lst[index].get("user_id").get().id)
+        qry_lst[index]["user_id"] = qry_lst[index].get("user_id").get().id
+    return qry_lst
 
 
 def user_type(email):
@@ -73,4 +78,18 @@ def user_type(email):
         pass
 
     return client
+
+
+def make_query(email, title, description):
+    user = fire_db.collection("User").where("email", "==", email)
+    user_id = user.get()[0].id
+    queries = fire_db.collection("Queries").get()
+    last_query_id = int(queries[-1].id)
+    query_data = {
+        "title": title,
+        "description": description,
+        "user_id": fire_db.collection("User").document(user_id),
+        "accepted": "false"
+    }
+    fire_db.collection("Queries").document(str(last_query_id + 1)).set(query_data)
 

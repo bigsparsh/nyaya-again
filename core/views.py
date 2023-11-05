@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .fire_auth import User, Lawyer
-from .store_db import list_lawyers, user_type
+from .store_db import list_lawyers, user_type, make_query, list_queries
 
 expertise = {
     "Criminal Defense": None,
@@ -89,18 +89,27 @@ def login(request):
 
 def query_generator(request):
     if request.session["user"] and user_type(request.session["user"]["email"]) == "user":
-        return render(request, "query_generator.html")
+        if request.method == "POST":
+            title = request.POST["title"]
+            description = request.POST["description"]
+            make_query(request.session["user"]["email"], title, description)
+            return redirect(dashboard)
+        else:
+            return render(request, "query_generator.html")
     else:
         return redirect(login)
 
 
 def dashboard(request):
     if request.session["user"]:
+        if user_type(request.session["user"]["email"]) == "user":
+            main_info = list_lawyers()
+        if user_type(request.session["user"]["email"]) == "lawyer":
+            main_info = list_queries()
         return render(request, "dashboard.html",
                       {"type": user_type(request.session["user"]["email"]),
                        "user": request.session["user"],
-                       "all_lawyers": list_lawyers(),
-                       "all_queries": 0})
+                       "main_info": main_info})
     else:
         return redirect(login)
 
