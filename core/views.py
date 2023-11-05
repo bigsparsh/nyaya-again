@@ -18,16 +18,22 @@ expertise = {
 
 
 def home(request):
-    if request.session["user"]:
-        return redirect(dashboard)
-    else:
+    try:
+        if request.session["user"]:
+            return redirect(dashboard)
+        else:
+            raise KeyError
+    except KeyError as _:
         return render(request, "home.html")
 
 
 def user_register(request):
-    if request.session["user"]:
-        return redirect(dashboard)
-    else:
+    try:
+        if request.session["user"]:
+            return redirect(dashboard)
+        else:
+            raise KeyError
+    except KeyError as _:
         if request.method == "POST":
             name = request.POST['name']
             email = request.POST['email']
@@ -35,7 +41,8 @@ def user_register(request):
             aadhar_id = request.POST['aadhar']
             phone = request.POST['phone']
             password = request.POST['password']
-            User(email=email, password=password).create(name=name, address=address, aadhar_id=aadhar_id, phone=phone)
+            User(email=email, password=password).create(name=name, address=address, aadhar_id=aadhar_id,
+                                                        phone=phone)
             message = ("This is to inform you that you have successfully created a Nyaya-Mitra account and you can "
                        "login to access the dashboard. \nIt is lovely to see that you have choosen to give our "
                        "services a chance, we hope your nyaya-mitra makes your problems go away.")
@@ -46,9 +53,12 @@ def user_register(request):
 
 
 def lawyer_register(request):
-    if request.session["user"]:
-        return redirect(dashboard)
-    else:
+    try:
+        if request.session["user"]:
+            return redirect(dashboard)
+        else:
+            raise KeyError
+    except KeyError as _:
         if request.method == "POST":
             name = request.POST['name']
             email = request.POST['email']
@@ -74,9 +84,12 @@ def lawyer_register(request):
 
 
 def login(request):
-    if request.session["user"]:
-        return redirect(dashboard)
-    else:
+    try:
+        if request.session["user"]:
+            return redirect(dashboard)
+        else:
+            raise KeyError
+    except KeyError as _:
         if request.method == "POST":
             email = request.POST['email']
             password = request.POST['password']
@@ -87,40 +100,45 @@ def login(request):
                 client = User(email=email, password=password).authenticate()
             request.session["user"] = client
             return redirect(dashboard)
-
         else:
             return render(request, "login.html")
 
 
 def query_generator(request):
-    if request.session["user"] and user_type(request.session["user"]["email"]) == "user":
-        if request.method == "POST":
-            title = request.POST["title"]
-            description = request.POST["description"]
-            make_query(request.session["user"]["email"], title, description)
-            return redirect(dashboard)
+    try:
+        if request.session["user"] and user_type(request.session["user"]["email"]) == "user":
+            if request.method == "POST":
+                title = request.POST["title"]
+                description = request.POST["description"]
+                make_query(request.session["user"]["email"], title, description)
+                return redirect(dashboard)
+            else:
+                return render(request, "query_generator.html")
         else:
-            return render(request, "query_generator.html")
-    else:
+            raise KeyError
+    except KeyError as _:
         return redirect(login)
 
 
 def dashboard(request):
-    if request.session["user"]:
-        client_type = request.session["user"]["email"]
-        if request.method == "POST":
-            print(request.POST)
+    try:
+        if request.session["user"]:
+            client_type = request.session["user"]["email"]
+            if request.method == "POST":
+                print(request.POST)
 
-        # else:
-        if user_type(client_type) == "user":
-            main_info = list_lawyers()
-        if user_type(client_type) == "lawyer":
-            main_info = list_queries()
-        return render(request, "dashboard.html",
-                      {"type": user_type(request.session["user"]["email"]),
-                       "user": request.session["user"],
-                       "main_info": main_info})
-    else:
+            # else:
+            if user_type(client_type) == "user":
+                main_info = list_lawyers()
+            if user_type(client_type) == "lawyer":
+                main_info = list_queries()
+            return render(request, "dashboard.html",
+                          {"type": user_type(request.session["user"]["email"]),
+                           "user": request.session["user"],
+                           "main_info": main_info})
+        else:
+            raise KeyError
+    except KeyError as _:
         return redirect(login)
 
 
