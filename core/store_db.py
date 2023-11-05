@@ -67,6 +67,7 @@ def list_queries():
         qry_lst.append(query.to_dict())
         # print(qry_lst[index].get("user_id").get().id)
         qry_lst[index]["user_id"] = qry_lst[index].get("user_id").get().id
+        qry_lst[index]["query_id"] = query.id
     return qry_lst
 
 

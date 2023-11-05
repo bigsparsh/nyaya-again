@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .fire_auth import User, Lawyer
 from .store_db import list_lawyers, user_type, make_query, list_queries
+from .mail_sendificator import send_email_to
 
 expertise = {
     "Criminal Defense": None,
@@ -35,6 +36,10 @@ def user_register(request):
             phone = request.POST['phone']
             password = request.POST['password']
             User(email=email, password=password).create(name=name, address=address, aadhar_id=aadhar_id, phone=phone)
+            message = ("This is to inform you that you have successfully created a Nyaya-Mitra account and you can "
+                       "login to access the dashboard. \nIt is lovely to see that you have choosen to give our "
+                       "services a chance, we hope your nyaya-mitra makes your problems go away.")
+            send_email_to("Welcome to the Nyaya-Mitra family", name, message, email)
             return redirect(login)
         else:
             return render(request, "user_register.html")
