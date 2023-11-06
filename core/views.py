@@ -142,11 +142,13 @@ def dashboard(request):
                     request.session["buffer"] = find_query_by_id(request_key)
                 return redirect(info_page)
 
-            # else:
-            if request.session["buffer"]:
-                return redirect(info_page)
-            else:
-                return render(request, "dashboard.html",
+            try:
+                if request.session["buffer"]:
+                    return redirect(info_page)
+            except KeyError as _:
+                pass
+
+            return render(request, "dashboard.html",
                               {"type": user_type(request.session["user"]["email"]),
                                "user": request.session["user"],
                                "main_info": main_info})
