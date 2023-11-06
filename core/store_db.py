@@ -55,9 +55,17 @@ def find_lawyer_by_id(lawyer_id):
     return lawyer
 
 
+def find_query_by_id(query_id):
+    query = fire_db.collection("Queries").document(query_id).get().to_dict()
+    query["query_id"] = query_id
+    query["user"] = query["user_id"].get().to_dict()
+    query["user"]["user_id"] = query["user_id"].id
+    query.pop("user_id")
+    return query
+
+
 def list_lawyers():
     lawyers = []
-    # lawyers = [lawyer.to_dict() for lawyer in fire_db.collection("Lawyers").get()]
     for index, lawyer in enumerate(fire_db.collection("Lawyers").get()):
         lawyers.append(lawyer.to_dict())
         lawyers[index]["lawyer_id"] = lawyer.id
@@ -66,7 +74,6 @@ def list_lawyers():
 
 def list_users():
     users = []
-    # users = [user.to_dict() for user in fire_db.collection("User").get()]
     for index, user in enumerate(fire_db.collection("User").get()):
         users.append(user.to_dict())
         users[index]["user_id"] = user.id

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .fire_auth import User, Lawyer
-from .store_db import list_lawyers, user_type, make_query, list_queries, find_lawyer_by_id
+from .store_db import list_lawyers, user_type, make_query, list_queries, find_lawyer_by_id, find_query_by_id
 from .mail_sendificator import send_email_to
 
 expertise = {
@@ -120,6 +120,11 @@ def query_generator(request):
         return redirect(login)
 
 
+def clear_buffer(request):
+    request.session["buffer"] = None
+    return redirect(dashboard)
+
+
 def dashboard(request):
     try:
         if request.session["user"]:
@@ -128,28 +133,39 @@ def dashboard(request):
                 main_info = list_lawyers()
             if user_type(client_email) == "lawyer":
                 main_info = list_queries()
-            if request.method == "POST" and user_type(client_email) == "user":
+            if request.method == "POST":
                 all_keys = list(request.POST.keys())
                 request_key = all_keys[1]
-                request.session["buffer_lawyer_id"] = request_key
-                return redirect(lawyer_profile)
+                if user_type(client_email) == "user":
+                    request.session["buffer"] = find_lawyer_by_id(request_key)
+                if user_type(client_email) == "lawyer":
+                    request.session["buffer"] = find_query_by_id(request_key)
+                return redirect(info_page)
 
             # else:
-            return render(request, "dashboard.html",
-                          {"type": user_type(request.session["user"]["email"]),
-                           "user": request.session["user"],
-                           "main_info": main_info})
+            if request.session["buffer"]:
+                return redirect(info_page)
+            else:
+                return render(request, "dashboard.html",
+                              {"type": user_type(request.session["user"]["email"]),
+                               "user": request.session["user"],
+                               "main_info": main_info})
         else:
             raise KeyError
     except KeyError as _:
         return redirect(login)
 
 
-def lawyer_profile(request):
+def info_page(request):
     try:
-        if request.session["user"] and request.session["buffer_lawyer_id"]:
-            lawyer = find_lawyer_by_id(request.session["buffer_lawyer_id"])
-            return render(request, "lawyer_info.html", {"lawyer": lawyer})
+        if request.session["user"] and request.session["buffer"]:
+            client_email = request.session["user"]["email"]
+            return render(request,
+                          "info_page.html",
+                          {"data": request.session["buffer"],
+                           "client_type": user_type(client_email)})
+        else:
+            raise KeyError
     except Exception as _:
         return redirect(login)
 

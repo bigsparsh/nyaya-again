@@ -11,7 +11,7 @@
 <body class="">
 
     <div class="text-5xl font-semibold px-5 py-3 flex justify-between items-center">
-        <h1 class="text">Welcome, {{ type }} <span class="text-green-500">{{ user.name }}</span></h1>
+        <h1 class="text">Welcome, {{ type }} <span class="text-green-500 font-light">{{ user.name }}</span></h1>
         <div class="btns flex items-center justify-center gap-3">
             <a href="/logout" class="text-2xl font-semibold bg-red-500 px-3 py-1 text-white rounded-lg">Logout</a>
             {% if type == "user" %}
@@ -46,7 +46,7 @@
                                 <div class="text-lg grid grid-cols-4"> <p class="font-semibold text-rose-500">More info:</p> <p class="col-span-3">{{query.description}}</p> </div>
                                 <div class="text-lg grid grid-cols-4"> <p class="font-semibold text-rose-500">User:</p> <p class="col-span-3">{{query.user_id}}</p> </div>
                             </div>
-                            <input name="{{query.query_id}}" type="submit" value="Select" class="w-full bg-yellow-400 px-5 py-1 font-semibold text-white text-2xl rounded-lg">
+                            <input name="{{query.query_id}}" type="submit" value="Accept" class="w-full bg-yellow-400 px-5 py-1 font-semibold text-white text-2xl rounded-lg">
                         </div>
                     {% endfor %}
                 </div>
