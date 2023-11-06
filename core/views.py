@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .fire_auth import User, Lawyer
-from .store_db import list_lawyers, user_type, make_query, list_queries
+from .store_db import list_lawyers, user_type, make_query, list_queries, find_lawyer_by_id
 from .mail_sendificator import send_email_to
 
 expertise = {
@@ -123,15 +123,18 @@ def query_generator(request):
 def dashboard(request):
     try:
         if request.session["user"]:
-            client_type = request.session["user"]["email"]
-            if request.method == "POST":
-                print(request.POST)
+            client_email = request.session["user"]["email"]
+            if user_type(client_email) == "user":
+                main_info = list_lawyers()
+            if user_type(client_email) == "lawyer":
+                main_info = list_queries()
+            if request.method == "POST" and user_type(client_email) == "user":
+                all_keys = list(request.POST.keys())
+                request_key = all_keys[1]
+                request.session["buffer_lawyer_id"] = request_key
+                return redirect(lawyer_profile)
 
             # else:
-            if user_type(client_type) == "user":
-                main_info = list_lawyers()
-            if user_type(client_type) == "lawyer":
-                main_info = list_queries()
             return render(request, "dashboard.html",
                           {"type": user_type(request.session["user"]["email"]),
                            "user": request.session["user"],
@@ -139,6 +142,15 @@ def dashboard(request):
         else:
             raise KeyError
     except KeyError as _:
+        return redirect(login)
+
+
+def lawyer_profile(request):
+    try:
+        if request.session["user"] and request.session["buffer_lawyer_id"]:
+            lawyer = find_lawyer_by_id(request.session["buffer_lawyer_id"])
+            return render(request, "lawyer_info.html", {"lawyer": lawyer})
+    except Exception as _:
         return redirect(login)
 
 

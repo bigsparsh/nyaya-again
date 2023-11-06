@@ -1,5 +1,5 @@
 import pyrebase as pb
-from .store_db import insert_into_user, insert_into_lawyer, find_user, find_lawyer
+from .store_db import insert_into_user, insert_into_lawyer, find_user_by_email, find_lawyer_by_email
 
 firebaseConfig = {
     'apiKey': "AIzaSyC9Su0Qp87w52JnFegOQJLPNAC5qmNepik",
@@ -23,7 +23,7 @@ class User:
 
     def authenticate(self):
         user = aut.sign_in_with_email_and_password(self.email, self.password)
-        return find_user(user["email"])
+        return find_user_by_email(user["email"])
 
     def create(self, name, phone, address, aadhar_id):
         aut.create_user_with_email_and_password(self.email, self.password)
@@ -37,7 +37,7 @@ class Lawyer:
 
     def authenticate(self):
         lawyer = aut.sign_in_with_email_and_password(self.email, self.password)
-        return find_lawyer(lawyer["email"])
+        return find_lawyer_by_email(lawyer["email"])
 
     def create(self, name, phone, address, bar_id, info, expertise):
         aut.create_user_with_email_and_password(self.email, self.password)

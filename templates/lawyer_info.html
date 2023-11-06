@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lawyer Info</title>
+    <script src="//cdn.tailwindcss.com"></script>
+
+</head>
+<body class="px-5 py-2">
+
+    <h1 class="text-5xl font-semibold">Advocate <span class="font-light text-green-500">{{ lawyer.name }}</span></h1>
+    <br>
+    <hr class="border-emerald-500">
+    <br>
+    <h1 class="text-2xl font-medium pb-1"> More info: </h1>
+    <p>{{ lawyer.info }}</p>
+    <br>
+    <hr class="border-emerald-500">
+    <br>
+    <h1 class="text-2xl font-medium pb-1"> Contact info: </h1>
+    <div class="container w-1/2 grid grid-cols-3">
+        <p class="font-bold text-rose-400">Email-ID: </p>
+        <p class="col-span-2">{{lawyer.email}}</p>
+        <p class="font-bold text-rose-400">Phone: </p>
+        <p class="col-span-2">{{lawyer.phone}}</p>
+        <p class="font-bold text-rose-400">Address: </p>
+        <p class="col-span-2">{{lawyer.address}}</p>
+        <p class="font-bold text-rose-400">Bar-ID: </p>
+        <p class="col-span-2">{{lawyer.bar_id}}</p>
+
+    </div>
+    <br>
+    <hr class="border-emerald-500">
+    <br>
+    <h1 class="text-2xl font-medium pb-1"> Expertise: </h1>
+    <div class="tags flex flex-wrap gap-2 col-span-2">
+        {% for exp in lawyer.expertise %}
+        <h3 class="bg-emerald-600 text-white px-2 py-1 w-fit h-fit rounded-lg">{{exp}}</h3>
+        {% endfor %}
+    </div>
+
+
+</body>
+</html>

@@ -35,30 +35,42 @@ def insert_into_lawyer(email, name, phone, address, bar_id, info, expertise):
     fire_db.collection("Lawyers").document(str(last_lawyer_id + 1)).set(lawyer_data)
 
 
-def find_user(email):
+def find_user_by_email(email):
     user = fire_db.collection("User").where("email", "==", email)
     user_info = user.get()[0].to_dict()
     user_info["user_id"] = user.get()[0].id
     return user_info
 
 
-def find_lawyer(email):
+def find_lawyer_by_email(email):
     lawyer = fire_db.collection("Lawyers").where("email", "==", email)
     lawyer_info = lawyer.get()[0].to_dict()
     lawyer_info["lawyer_id"] = lawyer.get()[0].id
     return lawyer_info
 
 
-# if __name__ == "__main__":
-#     print(find_lawyer("handle@gmail.com"))
+def find_lawyer_by_id(lawyer_id):
+    lawyer = fire_db.collection("Lawyers").document(lawyer_id).get().to_dict()
+    lawyer["lawyer_id"] = lawyer_id
+    return lawyer
 
 
 def list_lawyers():
-    return [lawyer.to_dict() for lawyer in fire_db.collection("Lawyers").get()]
+    lawyers = []
+    # lawyers = [lawyer.to_dict() for lawyer in fire_db.collection("Lawyers").get()]
+    for index, lawyer in enumerate(fire_db.collection("Lawyers").get()):
+        lawyers.append(lawyer.to_dict())
+        lawyers[index]["lawyer_id"] = lawyer.id
+    return lawyers
 
 
 def list_users():
-    return [user.to_dict() for user in fire_db.collection("User").get()]
+    users = []
+    # users = [user.to_dict() for user in fire_db.collection("User").get()]
+    for index, user in enumerate(fire_db.collection("User").get()):
+        users.append(user.to_dict())
+        users[index]["user_id"] = user.id
+    return users
 
 
 def list_queries():
@@ -74,12 +86,12 @@ def list_queries():
 def user_type(email):
     client = None
     try:
-        find_lawyer(email)
+        find_lawyer_by_email(email)
         client = "lawyer"
     except Exception as _:
         pass
     try:
-        find_user(email)
+        find_user_by_email(email)
         client = "user"
     except Exception as _:
         pass
@@ -88,7 +100,7 @@ def user_type(email):
 
 
 def make_query(email, title, description):
-    user = find_user(email)
+    user = find_user_by_email(email)
     queries = fire_db.collection("Queries").get()
     last_query_id = int(queries[-1].id)
     query_data = {
@@ -101,13 +113,13 @@ def make_query(email, title, description):
 
 
 def update_user(email):
-    user = find_user(email)
+    user = find_user_by_email(email)
     user_id = user["user_id"]
     user.pop("user_id")
 
 
 def update_lawyer(email):
-    lawyer = find_user(email)
+    lawyer = find_user_by_email(email)
     lawyer_id = lawyer["lawyer_id"]
     lawyer.pop("user_id")
 
