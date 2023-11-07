@@ -94,9 +94,14 @@ def list_queries(lawyer_local):
     return qry_lst
 
 
-def accept_query(lawyer, query):
-    lawyer["queries"].append(fire_db.collection("Queries").document(query["query_id"]))
-    fire_db.collection("Lawyers").document(lawyer["lawyer_id"]).set(lawyer, merge=True)
+def accept_query(lawyer_local, query_local):
+    lawyer_accepted_queries = [query["query_id"] for query in lawyer_local["queries"]]
+    qry_lst = []
+    for query_id in lawyer_accepted_queries:
+        qry_lst.append(fire_db.collection("Queries").document(query_id))
+    qry_lst.append(fire_db.collection("Queries").document(query_local["query_id"]))
+    lawyer_local["queries"] = qry_lst
+    fire_db.collection("Lawyers").document(lawyer_local["lawyer_id"]).set(lawyer_local, merge=True)
 
 
 def user_type(email):
