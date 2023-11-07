@@ -11,4 +11,5 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name="dashboard"),
     path('logout/', views.logout, name="logout"),
     path('clear_buffer/', views.clear_buffer, name="clear_buffer"),
+    path('query_accept/', views.query_accept, name="query_accept"),
 ]

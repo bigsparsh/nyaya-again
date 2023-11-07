@@ -39,10 +39,15 @@
                 <h3 class="bg-emerald-600 text-white px-2 py-1 w-fit h-fit rounded-lg">{{exp}}</h3>
             {% endfor %}
         </div>
+        <br>
+        <hr class="border-emerald-500">
+        <br>
+        <a href="/clear_buffer" class="bg-red-500 text-white px-4 py-2 text-xl font-bold rounded-lg">Close</a>
+
     {% endif %}
 
     {% if client_type == "lawyer" %}
-        <h1 class="text-5xl font-semibold">You have accepted the query of <span class="font-light text-green-500">{{ data.user.name }}</span></h1>
+        <h1 class="text-5xl font-semibold">Do you accept the query of <span class="font-light text-green-500">{{ data.user.name }}</span></h1>
         <br>
         <hr class="border-emerald-500">
         <br>
@@ -72,7 +77,8 @@
         <br>
         <hr class="border-emerald-500">
         <br>
-        <a href="/clear_buffer" class="bg-red-500 text-white px-4 py-2 text-xl font-bold rounded-lg">Okay</a>
+        <a href="/query_accept" class="bg-red-500 text-white px-4 py-2 text-xl font-bold rounded-lg">I accept</a>
+        <a href="/clear_buffer" class="bg-red-500 text-white px-4 py-2 text-xl font-bold rounded-lg">Cancel</a>
     {% endif %}
 
 

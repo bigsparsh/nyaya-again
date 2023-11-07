@@ -1,5 +1,6 @@
 from firebase_admin import firestore
 from .firebase_config import *
+import json
 
 fire_db = firestore.client()
 
@@ -13,7 +14,8 @@ def insert_into_user(email, name, phone, address, aadhar_id):
         'phone': phone,
         'address': address,
         'aadhar_id': aadhar_id,
-        'cases': []
+        'cases': [],
+        'queries': []
     }
     fire_db.collection("User").document(str(last_user_id + 1)).set(user_data)
 
@@ -30,7 +32,8 @@ def insert_into_lawyer(email, name, phone, address, bar_id, info, expertise):
         'info': info,
         'expertise': expertise,
         'rating': 0,
-        'cases': []
+        'cases': [],
+        'queries': []
     }
     fire_db.collection("Lawyers").document(str(last_lawyer_id + 1)).set(lawyer_data)
 
@@ -43,9 +46,10 @@ def find_user_by_email(email):
 
 
 def find_lawyer_by_email(email):
-    lawyer = fire_db.collection("Lawyers").where("email", "==", email)
-    lawyer_info = lawyer.get()[0].to_dict()
-    lawyer_info["lawyer_id"] = lawyer.get()[0].id
+    lawyer_local = fire_db.collection("Lawyers").where("email", "==", email)
+    lawyer_info = lawyer_local.get()[0].to_dict()
+    for index, query in enumerate(lawyer_info["queries"]):
+        lawyer_info["queries"][index] = find_query_by_id(query.id)
     return lawyer_info
 
 
@@ -80,14 +84,19 @@ def list_users():
     return users
 
 
-def list_queries():
+def list_queries(lawyer_local):
     qry_lst = []
-    for index, query in enumerate(fire_db.collection("Queries").get()):
-        qry_lst.append(query.to_dict())
-        # print(qry_lst[index].get("user_id").get().id)
-        qry_lst[index]["user_id"] = qry_lst[index].get("user_id").get().id
-        qry_lst[index]["query_id"] = query.id
+    lawyer_accepted_queries = [query["query_id"] for query in lawyer_local["queries"]]
+    queries_id = [query.id for query in fire_db.collection("Queries").get()]
+    queries_id = [x for x in queries_id if x not in lawyer_accepted_queries]
+    for query_id in queries_id:
+        qry_lst.append(find_query_by_id(query_id))
     return qry_lst
+
+
+def accept_query(lawyer, query):
+    lawyer["queries"].append(fire_db.collection("Queries").document(query["query_id"]))
+    fire_db.collection("Lawyers").document(lawyer["lawyer_id"]).set(lawyer, merge=True)
 
 
 def user_type(email):

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .fire_auth import User, Lawyer
-from .store_db import list_lawyers, user_type, make_query, list_queries, find_lawyer_by_id, find_query_by_id
+from .store_db import *
 from .mail_sendificator import send_email_to
 
 expertise = {
@@ -93,7 +93,6 @@ def login(request):
         if request.method == "POST":
             email = request.POST['email']
             password = request.POST['password']
-            print(user_type(email))
             if user_type(email) == "lawyer":
                 client = Lawyer(email=email, password=password).authenticate()
             if user_type(email) == "user":
@@ -132,7 +131,7 @@ def dashboard(request):
             if user_type(client_email) == "user":
                 main_info = list_lawyers()
             if user_type(client_email) == "lawyer":
-                main_info = list_queries()
+                main_info = list_queries(request.session["user"])
             if request.method == "POST":
                 all_keys = list(request.POST.keys())
                 request_key = all_keys[1]
@@ -147,6 +146,8 @@ def dashboard(request):
                     return redirect(info_page)
             except KeyError as _:
                 pass
+
+            print(main_info)
 
             return render(request, "dashboard.html",
                               {"type": user_type(request.session["user"]["email"]),
@@ -170,6 +171,25 @@ def info_page(request):
             raise KeyError
     except Exception as _:
         return redirect(login)
+
+
+def query_accept(request):
+    try:
+        client_email = request.session["user"]["email"]
+        if request.session["user"] and request.session["buffer"] and user_type(client_email) == "lawyer":
+            accept_query(request.session["user"], request.session["buffer"])
+            message = (f"You put out a query titled '{request.session['buffer']['title']}'."
+                       f"\nIt look like one of our legal representative Advocate {request.session['user']['name']} "
+                       f"has accepted your legal query and you can communicate with them to ensure your satisfaction "
+                       f"or you could wait for other lawyers to accept your query and then you can select one of those"
+                       f" lawyers to be your legal helper.\n - Nyaya Mitra team")
+            send_email_to("Your query was accepted by a lawyer!",
+                          request.session["buffer"]["user"]["name"],
+                          message,
+                          client_email)
+            return redirect(clear_buffer)
+    except KeyError as _:
+        return redirect(info_page)
 
 
 def logout(request):

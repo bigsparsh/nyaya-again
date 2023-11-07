@@ -40,14 +40,16 @@
             <h1 class="text-3xl p-3">All queries are: </h1>
                 <div class="big-container grid grid-cols-3 gap-4">
                     {% for query in main_info %}
-                        <div class="container border border-black p-5 flex flex-col gap-3 justify-between rounded-lg">
-                            <h1 class="text-2xl font-bold">{{query.title}}</h1>
-                            <div class="info space-y-3">
-                                <div class="text-lg grid grid-cols-4"> <p class="font-semibold text-rose-500">More info:</p> <p class="col-span-3">{{query.description}}</p> </div>
-                                <div class="text-lg grid grid-cols-4"> <p class="font-semibold text-rose-500">User:</p> <p class="col-span-3">{{query.user_id}}</p> </div>
+                        {% if query is not None %}
+                            <div class="container border border-black p-5 flex flex-col gap-3 justify-between rounded-lg">
+                                <h1 class="text-2xl font-bold">{{query.title}}</h1>
+                                <div class="info space-y-3">
+                                    <div class="text-lg grid grid-cols-4"> <p class="font-semibold text-rose-500">More info:</p> <p class="col-span-3">{{query.description}}</p> </div>
+                                    <div class="text-lg grid grid-cols-4"> <p class="font-semibold text-rose-500">User:</p> <p class="col-span-3">{{query.user_id}}</p> </div>
+                                </div>
+                                <input name="{{query.query_id}}" type="submit" value="Accept" class="w-full bg-yellow-400 px-5 py-1 font-semibold text-white text-2xl rounded-lg">
                             </div>
-                            <input name="{{query.query_id}}" type="submit" value="Accept" class="w-full bg-yellow-400 px-5 py-1 font-semibold text-white text-2xl rounded-lg">
-                        </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
             {% endif %}
