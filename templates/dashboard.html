@@ -13,10 +13,14 @@
     <div class="text-5xl font-semibold px-5 py-3 flex justify-between items-center">
         <h1 class="text">Welcome, {{ type }} <span class="text-green-500 font-light">{{ user.name }}</span></h1>
         <div class="btns flex items-center justify-center gap-3">
-            <a href="/logout" class="text-2xl font-semibold bg-red-500 px-3 py-1 text-white rounded-lg">Logout</a>
-            {% if type == "user" %}
-                <a href="/query_generator" class="text-2xl font-semibold bg-red-500 px-3 py-1 text-white rounded-lg">Generate a query</a>
+            {% if type == "lawyer" %}
+                <a href="/my_queries" class="text-2xl font-semibold bg-green-500 px-3 py-1 text-white rounded-lg">My queries</a>
             {% endif %}
+            {% if type == "user" %}
+                <a href="/my_queries" class="text-2xl font-semibold bg-green-500 px-3 py-1 text-white rounded-lg">My queries</a>
+                <a href="/query_generator" class="text-2xl font-semibold bg-green-500 px-3 py-1 text-white rounded-lg">Generate a query</a>
+            {% endif %}
+            <a href="/logout" class="text-2xl font-semibold bg-red-500 px-3 py-1 text-white rounded-lg">Logout</a>
         </div>
     </div>
     <hr>

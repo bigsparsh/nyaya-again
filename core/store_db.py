@@ -84,7 +84,7 @@ def list_users():
     return users
 
 
-def list_queries(lawyer_local):
+def list_display_queries_for_lawyer(lawyer_local):
     qry_lst = []
     lawyer_accepted_queries = [query["query_id"] for query in lawyer_local["queries"]]
     queries_id = [query.id for query in fire_db.collection("Queries").get()]
@@ -92,6 +92,16 @@ def list_queries(lawyer_local):
     for query_id in queries_id:
         qry_lst.append(find_query_by_id(query_id))
     return qry_lst
+
+
+def list_display_queries_for_user(user_id):
+    user = fire_db.collection("User").document(user_id)
+    qry_list = []
+    for query in fire_db.collection("Queries").where("user_id", "==", user).get():
+        temp = query.to_dict()
+        temp.pop("user_id")
+        qry_list.append(temp)
+    return qry_list
 
 
 def accept_query(lawyer_local, query_local):

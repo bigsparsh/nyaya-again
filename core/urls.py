@@ -8,6 +8,7 @@ urlpatterns = [
     path('lawyer_register/', views.lawyer_register, name="lawyer_register"),
     path('query_generator/', views.query_generator, name="query_generator"),
     path('info_page/', views.info_page, name="info_page"),
+    path('my_queries/', views.my_queries, name="my_queries"),
     path('dashboard/', views.dashboard, name="dashboard"),
     path('logout/', views.logout, name="logout"),
     path('clear_buffer/', views.clear_buffer, name="clear_buffer"),

@@ -131,7 +131,7 @@ def dashboard(request):
             if user_type(client_email) == "user":
                 main_info = list_lawyers()
             if user_type(client_email) == "lawyer":
-                main_info = list_queries(request.session["user"])
+                main_info = list_display_queries_for_lawyer(request.session["user"])
             if request.method == "POST":
                 all_keys = list(request.POST.keys())
                 request_key = all_keys[1]
@@ -191,6 +191,24 @@ def query_accept(request):
             return redirect(clear_buffer)
     except KeyError as _:
         return redirect(info_page)
+
+
+def my_queries(request):
+    main_data = None
+    try:
+        if request.session["user"]:
+            client_email = request.session["user"]["email"]
+            if user_type(client_email) == "lawyer":
+                main_data = request.session["user"]["queries"]
+            if user_type(client_email) == "user":
+                main_data = list_display_queries_for_user(request.session["user"]["user_id"])
+                print(main_data)
+        return render(request, "my_queries.html",
+                        {"client_type": user_type(client_email),
+                         "main_data": main_data})
+    except KeyError as _:
+        return redirect(login)
+
 
 
 def logout(request):
