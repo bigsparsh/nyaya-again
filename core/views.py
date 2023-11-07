@@ -186,7 +186,8 @@ def query_accept(request):
             send_email_to("Your query was accepted by a lawyer!",
                           request.session["buffer"]["user"]["name"],
                           message,
-                          client_email)
+                          request.session["buffer"]["user"]["email"])
+            request.session["user"] = find_lawyer_by_email(client_email)
             return redirect(clear_buffer)
     except KeyError as _:
         return redirect(info_page)

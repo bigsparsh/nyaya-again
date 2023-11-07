@@ -6,7 +6,7 @@
     <script src="//cdn.tailwindcss.com"></script>
 
 </head>
-<body class="px-5 py-2">
+<body class="px-5 pb-10 pt-3">
 
     {% if client_type == "user" %}
         <h1 class="text-5xl font-semibold">Advocate <span class="font-light text-green-500">{{ data.name }}</span></h1>
@@ -42,6 +42,20 @@
         <br>
         <hr class="border-emerald-500">
         <br>
+        {% if data.queries is not None %}
+            <h1 class="text-2xl font-medium pb-1"> Lawyer accepted queries: </h1>
+            <div class="big-container grid grid-cols-3 gap-3">
+                {% for qry in data.queries %}
+                    <div class="container border border-rose-400 rounded-xl px-5 py-3 space-y-2">
+                        <h1 class="text-3xl font-bold text-rose-400 ">{{qry.title}}</h1>
+                        <h1 class="text-sm">{{qry.description}}</h1>
+                    </div>
+                {% endfor %}
+            </div>
+            <br>
+            <hr class="border-emerald-500">
+            <br>
+        {% endif %}
         <a href="/clear_buffer" class="bg-red-500 text-white px-4 py-2 text-xl font-bold rounded-lg">Close</a>
 
     {% endif %}

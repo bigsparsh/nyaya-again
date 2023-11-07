@@ -21,14 +21,14 @@
     </div>
     <hr>
     <br>
-    <p class="text-lg"> <span class="px-5 font-semibold text-blue-500">Email-ID:</span> {{user.email}} </p>
-    <p class="text-lg"> <span class="px-5 font-semibold text-blue-500">Address:</span> {{user.address}} </p>
-    <p class="text-lg"> <span class="px-5 font-semibold text-blue-500">Phone:</span> {{user.phone}} </p>
+    <p class="text-lg"> <span class="px-5 font-semibold text-yellow-500">Email-ID:</span> {{user.email}} </p>
+    <p class="text-lg"> <span class="px-5 font-semibold text-yellow-500">Address:</span> {{user.address}} </p>
+    <p class="text-lg"> <span class="px-5 font-semibold text-yellow-500">Phone:</span> {{user.phone}} </p>
     {% if type == "lawyer" %}
-        <p class="text-lg"> <span class="px-5 font-semibold text-blue-500">Bar-ID:</span> {{user.bar_id}} </p>
+        <p class="text-lg"> <span class="px-5 font-semibold text-yellow-500">Bar-ID:</span> {{user.bar_id}} </p>
     {% endif %}
     {% if type == "user" %}
-        <p class="text-lg"> <span class="px-5 font-semibold text-blue-500">Aadhar-ID:</span> {{user.aadhar_id}} </p>
+        <p class="text-lg"> <span class="px-5 font-semibold text-yellow-500">Aadhar-ID:</span> {{user.aadhar_id}} </p>
     {% endif %}
     <br>
     <hr>
@@ -41,13 +41,13 @@
                 <div class="big-container grid grid-cols-3 gap-4">
                     {% for query in main_info %}
                         {% if query is not None %}
-                            <div class="container border border-black p-5 flex flex-col gap-3 justify-between rounded-lg">
-                                <h1 class="text-2xl font-bold">{{query.title}}</h1>
+                            <div class="container border border-rose-500 p-5 flex flex-col gap-3 justify-between rounded-lg">
+                                <h1 class="text-4xl font-light text-rose-500">{{query.title}}</h1>
                                 <div class="info space-y-3">
-                                    <div class="text-lg grid grid-cols-4"> <p class="font-semibold text-rose-500">More info:</p> <p class="col-span-3">{{query.description}}</p> </div>
-                                    <div class="text-lg grid grid-cols-4"> <p class="font-semibold text-rose-500">User:</p> <p class="col-span-3">{{query.user_id}}</p> </div>
+                                    <div class="text-lg grid grid-cols-4"> <p class="font-bold text-rose-400">More info:</p> <p class="col-span-3">{{query.description}}</p> </div>
+                                    <div class="text-lg grid grid-cols-4"> <p class="font-bold text-rose-400">User:</p> <p class="col-span-3">{{query.user.user_id}}</p> </div>
                                 </div>
-                                <input name="{{query.query_id}}" type="submit" value="Accept" class="w-full bg-yellow-400 px-5 py-1 font-semibold text-white text-2xl rounded-lg">
+                                <input name="{{query.query_id}}" type="submit" value="Accept" class="w-full bg-yellow-500 px-5 py-1 font-semibold text-white text-2xl rounded-lg">
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -58,14 +58,14 @@
                 <h1 class="text-3xl p-3">Available lawyers are: </h1>
                 <div class="big-container grid grid-cols-3 gap-4">
                     {% for lawyer in main_info %}
-                        <div class="container border border-black p-5 flex flex-col gap-3 justify-between rounded-lg">
-                            <h1 class="text-2xl font-bold">Advocate {{ lawyer.name }}</h1>
+                        <div class="container border border-rose-500 p-5 flex flex-col gap-3 justify-between rounded-lg">
+                            <h1 class="text-4xl font-light text-rose-500">Advocate {{ lawyer.name }}</h1>
                             <div class="info">
-                                <div class="text-lg grid grid-cols-4"> <p class="font-semibold text-rose-500">Email-ID:</p> <p class="col-span-3">{{lawyer.email}}</p> </div>
-                                <div class="text-lg grid grid-cols-4"> <p class="font-semibold text-rose-500">Address:</p> <p class="col-span-3">{{lawyer.address}}</p> </div>
-                                <div class="text-lg grid grid-cols-4"> <p class="font-semibold text-rose-500">Phone:</p> <p class="col-span-3">{{lawyer.phone}}</p> </div>
-                                <div class="text-lg grid grid-cols-4"> <p class="font-semibold text-rose-500">Bar-ID:</p> <p class="col-span-3">{{lawyer.bar_id}}</p> </div>
-                                <div class="text-lg grid grid-cols-4"> <p class="font-semibold text-rose-500">Expertise:</p>
+                                <div class="text-lg grid grid-cols-4"> <p class="font-bold text-rose-400">Email-ID:</p> <p class="col-span-3">{{lawyer.email}}</p> </div>
+                                <div class="text-lg grid grid-cols-4"> <p class="font-bold text-rose-400">Address:</p> <p class="col-span-3">{{lawyer.address}}</p> </div>
+                                <div class="text-lg grid grid-cols-4"> <p class="font-bold text-rose-400">Phone:</p> <p class="col-span-3">{{lawyer.phone}}</p> </div>
+                                <div class="text-lg grid grid-cols-4"> <p class="font-bold text-rose-400">Bar-ID:</p> <p class="col-span-3">{{lawyer.bar_id}}</p> </div>
+                                <div class="text-lg grid grid-cols-4"> <p class="font-bold text-rose-400">Expertise:</p>
                                     <div class="col-span-3 flex flex-wrap overflow-hidden gap-1">
                                         {% for exp in lawyer.expertise %}
                                             <h3 class="px-2 py-1 text-sm font-medium bg-emerald-500 text-white w-fit h-fit rounded-lg"> {{exp}} </h3>
@@ -73,7 +73,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <input name="{{lawyer.lawyer_id}}" type="submit" value="Contact" class="w-full bg-yellow-400 px-5 py-1 font-semibold text-white text-2xl rounded-lg">
+                            <input name="{{lawyer.lawyer_id}}" type="submit" value="More info +" class="w-full bg-yellow-500 px-5 py-1 font-semibold text-white text-2xl rounded-lg">
                         </div>
                     {% endfor %}
                 </div>

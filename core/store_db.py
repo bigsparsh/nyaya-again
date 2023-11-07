@@ -55,7 +55,7 @@ def find_lawyer_by_email(email):
 
 def find_lawyer_by_id(lawyer_id):
     lawyer = fire_db.collection("Lawyers").document(lawyer_id).get().to_dict()
-    lawyer["lawyer_id"] = lawyer_id
+    lawyer = find_lawyer_by_email(lawyer["email"])
     return lawyer
 
 
