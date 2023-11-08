@@ -1,100 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Lawyer Info</title>
-    <script src="//cdn.tailwindcss.com"></script>
+{% extends 'base.html' %}
+{% block content %}
+    <main class="px-5 pb-10 pt-3">
+        {% if client_type == "user" %}
+            <h1 class="text-5xl font-semibold">Advocate <span class="font-light text-green-500">{{ data.name }}</span></h1>
+            <br>
+            <hr class="border-emerald-500">
+            <br>
+            <h1 class="text-2xl font-medium pb-1"> More info: </h1>
+            <p>{{ data.info }}</p>
+            <br>
+            <hr class="border-emerald-500">
+            <br>
+            <h1 class="text-2xl font-medium pb-1"> Contact info: </h1>
+            <div class="container w-1/2 grid grid-cols-3">
+                <p class="font-bold text-rose-400">Email-ID: </p>
+                <p class="col-span-2">{{data.email}}</p>
+                <p class="font-bold text-rose-400">Phone: </p>
+                <p class="col-span-2">{{data.phone}}</p>
+                <p class="font-bold text-rose-400">Address: </p>
+                <p class="col-span-2">{{data.address}}</p>
+                <p class="font-bold text-rose-400">Bar-ID: </p>
+                <p class="col-span-2">{{data.bar_id}}</p>
 
-</head>
-<body class="px-5 pb-10 pt-3">
-
-    {% if client_type == "user" %}
-        <h1 class="text-5xl font-semibold">Advocate <span class="font-light text-green-500">{{ data.name }}</span></h1>
-        <br>
-        <hr class="border-emerald-500">
-        <br>
-        <h1 class="text-2xl font-medium pb-1"> More info: </h1>
-        <p>{{ data.info }}</p>
-        <br>
-        <hr class="border-emerald-500">
-        <br>
-        <h1 class="text-2xl font-medium pb-1"> Contact info: </h1>
-        <div class="container w-1/2 grid grid-cols-3">
-            <p class="font-bold text-rose-400">Email-ID: </p>
-            <p class="col-span-2">{{data.email}}</p>
-            <p class="font-bold text-rose-400">Phone: </p>
-            <p class="col-span-2">{{data.phone}}</p>
-            <p class="font-bold text-rose-400">Address: </p>
-            <p class="col-span-2">{{data.address}}</p>
-            <p class="font-bold text-rose-400">Bar-ID: </p>
-            <p class="col-span-2">{{data.bar_id}}</p>
-
-        </div>
-        <br>
-        <hr class="border-emerald-500">
-        <br>
-        <h1 class="text-2xl font-medium pb-1"> Expertise: </h1>
-        <div class="tags flex flex-wrap gap-2 col-span-2">
-            {% for exp in data.expertise %}
-                <h3 class="bg-emerald-600 text-white px-2 py-1 w-fit h-fit rounded-lg">{{exp}}</h3>
-            {% endfor %}
-        </div>
-        <br>
-        <hr class="border-emerald-500">
-        <br>
-        {% if data.queries is not None %}
-            <h1 class="text-2xl font-medium pb-1"> Lawyer accepted queries: </h1>
-            <div class="big-container grid grid-cols-3 gap-3">
-                {% for qry in data.queries %}
-                    <div class="container border border-rose-400 rounded-xl px-5 py-3 space-y-2">
-                        <h1 class="text-3xl font-bold text-rose-400 ">{{qry.title}}</h1>
-                        <h1 class="text-sm">{{qry.description}}</h1>
-                    </div>
+            </div>
+            <br>
+            <hr class="border-emerald-500">
+            <br>
+            <h1 class="text-2xl font-medium pb-1"> Expertise: </h1>
+            <div class="tags flex flex-wrap gap-2 col-span-2">
+                {% for exp in data.expertise %}
+                    <h3 class="bg-emerald-600 text-white px-2 py-1 w-fit h-fit rounded-lg">{{exp}}</h3>
                 {% endfor %}
             </div>
             <br>
             <hr class="border-emerald-500">
             <br>
+            {% if data.queries is not None %}
+                <h1 class="text-2xl font-medium pb-1"> Lawyer accepted queries: </h1>
+                <div class="big-container grid grid-cols-3 gap-3">
+                    {% for qry in data.queries %}
+                        <div class="container border border-rose-400 rounded-xl px-5 py-3 space-y-2">
+                            <h1 class="text-3xl font-bold text-rose-400 ">{{qry.title}}</h1>
+                            <h1 class="text-sm">{{qry.description}}</h1>
+                        </div>
+                    {% endfor %}
+                </div>
+                <br>
+                <hr class="border-emerald-500">
+                <br>
+            {% endif %}
+            <a href="/clear_buffer" onclick="showLoader();" class="bg-red-500 text-white px-4 py-2 text-xl font-bold rounded-lg">Close</a>
+
         {% endif %}
-        <a href="/clear_buffer" class="bg-red-500 text-white px-4 py-2 text-xl font-bold rounded-lg">Close</a>
 
-    {% endif %}
-
-    {% if client_type == "lawyer" %}
-        <h1 class="text-5xl font-semibold">Do you accept the query of <span class="font-light text-green-500">{{ data.user.name }}</span></h1>
-        <br>
-        <hr class="border-emerald-500">
-        <br>
-        <h1 class="text-2xl font-medium pb-1"> User Contact info: </h1>
-            <div class="container w-1/2 grid grid-cols-3">
-                <p class="font-bold text-rose-400">User-ID: </p>
-                <p class="col-span-2">{{data.user.user_id}}</p>
-                <p class="font-bold text-rose-400">Email-ID: </p>
-                <p class="col-span-2">{{data.user.email}}</p>
-                <p class="font-bold text-rose-400">Phone: </p>
-                <p class="col-span-2">{{data.user.phone}}</p>
-                <p class="font-bold text-rose-400">Address: </p>
-                <p class="col-span-2">{{data.user.address}}</p>
-                <p class="font-bold text-rose-400">Bar-ID: </p>
-                <p class="col-span-2">{{data.user.aadhar_id}}</p>
-            </div>
-        <br>
-        <hr class="border-emerald-500">
-        <br>
-        <h1 class="text-2xl font-medium pb-1">Title: </h1>
-        <p>{{ data.title }}</p>
-        <br>
-        <hr class="border-emerald-500">
-        <br>
-        <h1 class="text-2xl font-medium pb-1">Description: </h1>
-        <p>{{ data.description }}</p>
-        <br>
-        <hr class="border-emerald-500">
-        <br>
-        <a href="/query_accept" class="bg-red-500 text-white px-4 py-2 text-xl font-bold rounded-lg">I accept</a>
-        <a href="/clear_buffer" class="bg-red-500 text-white px-4 py-2 text-xl font-bold rounded-lg">Cancel</a>
-    {% endif %}
-
-
-</body>
-</html>
+        {% if client_type == "lawyer" %}
+            <h1 class="text-5xl font-semibold">Do you accept the query of <span class="font-light text-green-500">{{ data.user.name }}</span></h1>
+            <br>
+            <hr class="border-emerald-500">
+            <br>
+            <h1 class="text-2xl font-medium pb-1"> User Contact info: </h1>
+                <div class="container w-1/2 grid grid-cols-3">
+                    <p class="font-bold text-rose-400">User-ID: </p>
+                    <p class="col-span-2">{{data.user.user_id}}</p>
+                    <p class="font-bold text-rose-400">Email-ID: </p>
+                    <p class="col-span-2">{{data.user.email}}</p>
+                    <p class="font-bold text-rose-400">Phone: </p>
+                    <p class="col-span-2">{{data.user.phone}}</p>
+                    <p class="font-bold text-rose-400">Address: </p>
+                    <p class="col-span-2">{{data.user.address}}</p>
+                    <p class="font-bold text-rose-400">Bar-ID: </p>
+                    <p class="col-span-2">{{data.user.aadhar_id}}</p>
+                </div>
+            <br>
+            <hr class="border-emerald-500">
+            <br>
+            <h1 class="text-2xl font-medium pb-1">Title: </h1>
+            <p>{{ data.title }}</p>
+            <br>
+            <hr class="border-emerald-500">
+            <br>
+            <h1 class="text-2xl font-medium pb-1">Description: </h1>
+            <p>{{ data.description }}</p>
+            <br>
+            <hr class="border-emerald-500">
+            <br>
+            <a href="/query_accept" onclick="showLoader();" class="bg-red-500 text-white px-4 py-2 text-xl font-bold rounded-lg">I accept</a>
+            <a href="/clear_buffer" onclick="showLoader();" class="bg-red-500 text-white px-4 py-2 text-xl font-bold rounded-lg">Cancel</a>
+        {% endif %}
+    </main>
+{% endblock %}

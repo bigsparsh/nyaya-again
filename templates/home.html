@@ -1,22 +1,12 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    <script src="//cdn.tailwindcss.com"></script>
-</head>
-<body class="h-screen w-screen bg-stone-800 text-white flex items-center justify-center">
-
-    <div class="container flex flex-col items-center justify-evenly w-1/2 h-2/3 border border-stone-100 rounded-xl">
-        <a href="login" class="text-5xl tracking-tighter hover:animate-pulse">Login form</a>
-        <a href="user_register" class="text-5xl tracking-tighter hover:animate-pulse">User registration form</a>
-        <a href="lawyer_register" class="text-5xl tracking-tighter hover:animate-pulse">Lawyer registration form</a>
-        <a href="query_generator" class="text-5xl tracking-tighter hover:animate-pulse">Query generation form</a>
-        <a href="dashboard" class="text-5xl tracking-tighter hover:animate-pulse">Dashboard</a>
-    </div>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+    <main class="h-screen w-screen bg-stone-800 text-white flex items-center justify-center">
+        <div class="container flex flex-col items-center justify-evenly w-1/2 h-2/3 border border-stone-100 rounded-xl">
+            <a onclick="showLoader();" href="login" class="text-5xl tracking-tighter hover:animate-pulse">Login form</a>
+            <a onclick="showLoader();" href="user_register" class="text-5xl tracking-tighter hover:animate-pulse">User registration form</a>
+            <a onclick="showLoader();" href="lawyer_register" class="text-5xl tracking-tighter hover:animate-pulse">Lawyer registration form</a>
+            <a onclick="showLoader();" href="query_generator" class="text-5xl tracking-tighter hover:animate-pulse">Query generation form</a>
+            <a onclick="showLoader();" href="dashboard" class="text-5xl tracking-tighter hover:animate-pulse">Dashboard</a>
+        </div>
+    </main>
+{% endblock %}
